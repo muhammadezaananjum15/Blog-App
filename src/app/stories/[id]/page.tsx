@@ -5,7 +5,6 @@ import Link from "next/link";
 import CosmicCanvas from "@/components/CosmicCanvas";
 import MagneticCursor from "@/components/MagneticCursor";
 import HeaderNav from "@/components/HeaderNav";
-import NavigationDrawer from "@/components/NavigationDrawer";
 import NewsletterModal from "@/components/NewsletterModal";
 import PublicApisExplorerModal from "@/components/PublicApisExplorerModal";
 import FooterSection from "@/components/FooterSection";
@@ -45,17 +44,8 @@ export default function ArticleDetailPage({
   const [hasLiked, setHasLiked] = useState(false);
   const [likes, setLikes] = useState(0);
 
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isNewsletterOpen, setIsNewsletterOpen] = useState(false);
   const [isApisExplorerOpen, setIsApisExplorerOpen] = useState(false);
-
-  const navItems: NavItem[] = [
-    { id: "home", label: "Home" },
-    { id: "feeds", label: "Stories" },
-    { id: "pillars", label: "Editorial" },
-    { id: "curators", label: "Curators" },
-    { id: "bookmarks", label: "Saved" },
-  ];
 
   // Load post
   useEffect(() => {
@@ -149,8 +139,8 @@ export default function ArticleDetailPage({
     return (
       <div className="min-h-screen bg-[#050505] text-white flex items-center justify-center">
         <div className="flex flex-col items-center gap-3">
-          <div className="w-8 h-8 rounded-full border-2 border-[#0066FF] border-t-transparent animate-spin" />
-          <p className="text-xs uppercase tracking-widest text-white/50 font-mono">
+          <div className="w-8 h-8 rounded-full border-2 border-[#D4A853] border-t-transparent animate-spin" />
+          <p className="text-xs uppercase tracking-widest text-[#D4A853] font-mono">
             Ingesting Editorial Telemetry...
           </p>
         </div>
@@ -159,45 +149,38 @@ export default function ArticleDetailPage({
   }
 
   return (
-    <div className="w-full min-h-screen bg-transparent text-white relative selection:bg-white selection:text-black">
+    <div className="w-full min-h-screen bg-transparent text-white relative selection:bg-[#D4A853] selection:text-black">
       <CosmicCanvas />
       <MagneticCursor />
 
       {/* Top Sticky Reading Progress Bar */}
       <div className="fixed top-0 left-0 right-0 h-1 bg-white/10 z-50">
         <div
-          className="h-full bg-[#0066FF] transition-all duration-150"
+          className="h-full bg-gradient-to-r from-[#D4A853] to-[#C4943F] transition-all duration-150"
           style={{ width: `${scrollProgress}%` }}
         />
       </div>
 
       {/* Header */}
       <HeaderNav
-        navItems={navItems}
-        activeNav="feeds"
-        onSelectNav={(id) => {
-          if (id === "home") window.location.href = "/";
-          else window.location.href = `/stories`;
-        }}
-        onOpenMenu={() => setIsMenuOpen(!isMenuOpen)}
-        isMenuOpen={isMenuOpen}
         bookmarkCount={bookmarks.length}
         onOpenApisExplorer={() => setIsApisExplorerOpen(true)}
+        onOpenNewsletter={() => setIsNewsletterOpen(true)}
       />
 
       {/* Main Article Container */}
-      <div className="max-w-6xl mx-auto px-6 sm:px-10 md:px-14 pt-8 sm:pt-12 pb-24">
+      <div className="max-w-6xl mx-auto px-6 sm:px-10 md:px-14 pt-24 sm:pt-32 pb-24">
         {/* Back Link & Category */}
         <div className="flex items-center justify-between gap-4 mb-8">
           <Link
             href="/stories"
-            className="inline-flex items-center gap-2 text-xs font-medium text-white/70 hover:text-white transition-colors"
+            className="inline-flex items-center gap-2 text-xs font-medium text-white/70 hover:text-[#D4A853] transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             <span>Return to All Stories</span>
           </Link>
 
-          <span className="px-3.5 py-1 rounded-full text-xs font-medium bg-white/10 text-white border border-white/15">
+          <span className="px-3.5 py-1 rounded-full text-xs font-semibold bg-[#D4A853]/20 text-[#D4A853] border border-[#D4A853]/30 uppercase tracking-wider">
             {post.category}
           </span>
         </div>
@@ -213,13 +196,13 @@ export default function ArticleDetailPage({
         </div>
 
         {/* Hero Cover Image */}
-        <div className="w-full h-72 sm:h-[460px] rounded-[32px] overflow-hidden relative shadow-2xl mb-12 border border-white/15">
+        <div className="w-full h-72 sm:h-[480px] rounded-[32px] overflow-hidden relative shadow-2xl mb-12 border border-white/15">
           <img
             src={post.coverImage}
             alt={post.title}
             className="w-full h-full object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent pointer-events-none" />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/85 via-transparent to-transparent pointer-events-none" />
 
           {/* Bottom Banner inside Image */}
           <div className="absolute bottom-6 left-6 right-6 flex items-center justify-between text-xs text-white/80">
@@ -227,7 +210,7 @@ export default function ArticleDetailPage({
               <img
                 src={post.author.avatar}
                 alt={post.author.name}
-                className="w-10 h-10 rounded-full border border-white/20 object-cover"
+                className="w-10 h-10 rounded-xl border border-white/20 object-cover"
               />
               <div>
                 <p className="font-semibold text-white">{post.author.name}</p>
@@ -236,8 +219,8 @@ export default function ArticleDetailPage({
             </div>
 
             <div className="flex items-center gap-3">
-              <span className="flex items-center gap-1 font-mono">
-                <Clock className="w-3.5 h-3.5 text-[#0066FF]" />
+              <span className="flex items-center gap-1 font-mono text-[#D4A853]">
+                <Clock className="w-3.5 h-3.5" />
                 {post.readingTime}
               </span>
               <span>•</span>
@@ -251,18 +234,18 @@ export default function ArticleDetailPage({
           {/* Sticky Left Sidebar on Desktop */}
           <aside className="lg:col-span-4 lg:sticky lg:top-24 space-y-6">
             {/* Audio Simulation Box */}
-            <div className="p-5 rounded-2xl bg-white/[0.05] border border-white/15 backdrop-blur-xl">
+            <div className="p-5 rounded-2xl bg-[#0A0A0E]/90 border border-white/15 backdrop-blur-xl">
               <div className="flex items-center justify-between mb-3">
                 <span className="text-xs uppercase tracking-wider font-semibold text-white/70">
                   Audio Monologue
                 </span>
-                <span className="text-[10px] text-[#0066FF] font-mono">AI Synthesizer</span>
+                <span className="text-[10px] text-[#D4A853] font-mono">Synthesized Voice</span>
               </div>
               <button
                 onClick={() => setIsPlayingAudio(!isPlayingAudio)}
                 className={`w-full py-3 px-4 rounded-xl text-xs font-semibold flex items-center justify-center gap-2 transition-all cursor-pointer ${
                   isPlayingAudio
-                    ? "bg-[#0066FF] text-white shadow-lg"
+                    ? "bg-gradient-to-r from-[#D4A853] to-[#C4943F] text-black shadow-lg shadow-[#D4A853]/20"
                     : "bg-white/10 hover:bg-white/20 text-white"
                 }`}
               >
@@ -281,12 +264,12 @@ export default function ArticleDetailPage({
             </div>
 
             {/* Quick Actions (Bookmark, Like, Share) */}
-            <div className="p-5 rounded-2xl bg-white/[0.05] border border-white/15 backdrop-blur-xl flex flex-col gap-3">
+            <div className="p-5 rounded-2xl bg-[#0A0A0E]/90 border border-white/15 backdrop-blur-xl flex flex-col gap-3">
               <button
                 onClick={() => handleToggleBookmark(post.id)}
                 className={`w-full py-2.5 px-4 rounded-xl text-xs font-medium flex items-center justify-between transition-all border cursor-pointer ${
                   isSaved
-                    ? "bg-[#0066FF]/20 border-[#0066FF] text-[#0066FF]"
+                    ? "bg-[#D4A853]/20 border-[#D4A853] text-[#D4A853]"
                     : "bg-white/5 hover:bg-white/10 border-white/15 text-white/80"
                 }`}
               >
@@ -301,12 +284,12 @@ export default function ArticleDetailPage({
                 onClick={handleLike}
                 className={`w-full py-2.5 px-4 rounded-xl text-xs font-medium flex items-center justify-between transition-all border cursor-pointer ${
                   hasLiked
-                    ? "bg-[#FF5500]/20 border-[#FF5500] text-[#FF5500]"
+                    ? "bg-[#D4A853]/20 border-[#D4A853] text-[#D4A853]"
                     : "bg-white/5 hover:bg-white/10 border-white/15 text-white/80"
                 }`}
               >
                 <div className="flex items-center gap-2">
-                  <Heart className={`w-4 h-4 ${hasLiked ? "fill-current" : ""}`} />
+                  <Heart className={`w-4 h-4 ${hasLiked ? "fill-current text-[#D4A853]" : ""}`} />
                   <span>{likes} Applaud</span>
                 </div>
                 <span className="text-[10px] uppercase font-mono">React</span>
@@ -325,13 +308,13 @@ export default function ArticleDetailPage({
             </div>
 
             {/* Source & Telemetry */}
-            <div className="p-5 rounded-2xl bg-white/[0.05] border border-white/15 text-xs text-white/60 space-y-2">
-              <p className="text-[11px] uppercase tracking-wider font-semibold text-white/90">
+            <div className="p-5 rounded-2xl bg-[#0A0A0E]/90 border border-white/15 text-xs text-white/60 space-y-2">
+              <p className="text-[11px] uppercase tracking-wider font-semibold text-[#D4A853]">
                 Data Provenance
               </p>
               <p>Source Protocol: <span className="text-white font-mono">{post.apiSource || post.source}</span></p>
-              <p>Impact Score: <span className="text-[#0066FF] font-bold font-mono">{post.metrics?.impactScore || 95}/100</span></p>
-              <p>Verified Views: <span className="text-white font-mono">{post.metrics?.views || "14.2k"}</span></p>
+              <p>Impact Score: <span className="text-[#D4A853] font-bold font-mono">{post.metrics?.impactScore || 98}/100</span></p>
+              <p>Verified Views: <span className="text-white font-mono">{post.metrics?.views || "24.5k"}</span></p>
             </div>
           </aside>
 
@@ -367,7 +350,7 @@ export default function ArticleDetailPage({
                 return (
                   <blockquote
                     key={idx}
-                    className="p-6 sm:p-8 my-8 rounded-3xl bg-white/[0.04] border-l-4 border-[#0066FF] font-serif-luxury italic text-xl sm:text-2xl text-white/95 leading-relaxed shadow-xl"
+                    className="p-6 sm:p-8 my-8 rounded-3xl bg-white/[0.04] border-l-4 border-[#D4A853] font-serif-luxury italic text-xl sm:text-2xl text-white/95 leading-relaxed shadow-xl"
                   >
                     {p.replace("> ", "")}
                   </blockquote>
@@ -421,16 +404,16 @@ export default function ArticleDetailPage({
         <section className="mt-28 pt-16 border-t border-white/10">
           <div className="flex items-center justify-between mb-10">
             <div>
-              <span className="text-xs uppercase tracking-widest text-[#0066FF] font-semibold">
+              <span className="text-xs uppercase tracking-widest text-[#D4A853] font-semibold">
                 Keep Reading
               </span>
               <h3 className="text-2xl sm:text-3xl font-medium text-white mt-1">
-                Related Editorial <span className="font-serif-luxury italic text-[#0066FF]">Essays</span>
+                Related Editorial <span className="font-serif-luxury italic text-[#D4A853]">Essays</span>
               </h3>
             </div>
             <Link
               href="/stories"
-              className="text-xs font-semibold text-white/80 hover:text-white underline"
+              className="text-xs font-semibold text-white/80 hover:text-[#D4A853] underline"
             >
               Browse All Stories →
             </Link>
@@ -453,20 +436,6 @@ export default function ArticleDetailPage({
         onScrollToTop={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         onOpenApisExplorer={() => setIsApisExplorerOpen(true)}
         onOpenNewsletter={() => setIsNewsletterOpen(true)}
-      />
-
-      <NavigationDrawer
-        isOpen={isMenuOpen}
-        onClose={() => setIsMenuOpen(false)}
-        navItems={navItems}
-        activeNav="feeds"
-        onSelectNav={(id) => {
-          if (id === "home") window.location.href = "/";
-          else window.location.href = `/stories`;
-        }}
-        onOpenNewsletter={() => setIsNewsletterOpen(true)}
-        onOpenApisExplorer={() => setIsApisExplorerOpen(true)}
-        bookmarkCount={bookmarks.length}
       />
 
       <PublicApisExplorerModal

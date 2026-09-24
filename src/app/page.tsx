@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import CosmicCanvas from "@/components/CosmicCanvas";
 import MagneticCursor from "@/components/MagneticCursor";
 import HeaderNav from "@/components/HeaderNav";
-import NavigationDrawer from "@/components/NavigationDrawer";
 import HeroSection from "@/components/HeroSection";
 import TrustedSourcesMarquee from "@/components/TrustedSourcesMarquee";
 import EditorialPillars from "@/components/EditorialPillars";
@@ -87,7 +86,7 @@ export default function HomePage() {
         }
       }
     } catch {
-      // Fallback already in memory
+      // Fallback in memory
     } finally {
       setIsLoading(false);
     }
@@ -127,15 +126,15 @@ export default function HomePage() {
   };
 
   return (
-    <div className="w-full overflow-x-hidden bg-transparent text-white selection:bg-white selection:text-black min-h-screen relative">
+    <div className="w-full overflow-x-hidden bg-transparent text-white selection:bg-[#D4A853] selection:text-black min-h-screen relative">
       {/* Interactive Cosmic Particles Canvas Background */}
       <CosmicCanvas />
 
       {/* GSAP Magnetic Fluid Pointer */}
       <MagneticCursor />
 
-      {/* Main Container / Hero Wrapper matching travel-agency-seven-red height & flex */}
-      <div className="w-full min-h-[100svh] sm:min-h-[900px] bg-transparent text-white flex flex-col justify-between relative overflow-hidden pb-10 sm:pb-0">
+      {/* Hero Wrapper */}
+      <div className="w-full min-h-[100svh] sm:min-h-[860px] bg-transparent text-white flex flex-col justify-between relative overflow-hidden pb-8 sm:pb-0">
         {/* Floating Top Navigation Header */}
         <HeaderNav
           navItems={navItems}
@@ -145,6 +144,7 @@ export default function HomePage() {
           isMenuOpen={isMenuOpen}
           bookmarkCount={bookmarks.length}
           onOpenApisExplorer={() => setIsApisExplorerOpen(true)}
+          onOpenNewsletter={() => setIsNewsletterOpen(true)}
         />
 
         {/* Hero Section with bottom split cards */}
@@ -176,9 +176,7 @@ export default function HomePage() {
         selectedCategory={selectedCategory}
         onSelectCategory={(cat) => {
           setSelectedCategory(cat);
-          if (cat === "bookmarks") {
-            // No need to fetch
-          } else {
+          if (cat !== "bookmarks") {
             fetchFeed(cat, searchQuery);
           }
         }}
@@ -202,7 +200,7 @@ export default function HomePage() {
       {/* Curator Testimonials Spotlight */}
       <CuratorSpotlight />
 
-      {/* Features Split Section (2 left, central visual node, 2 right) */}
+      {/* Features Split Section */}
       <FeaturesSplitSection />
 
       {/* Luxury Minimalist Footer */}
@@ -210,18 +208,6 @@ export default function HomePage() {
         onScrollToTop={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         onOpenApisExplorer={() => setIsApisExplorerOpen(true)}
         onOpenNewsletter={() => setIsNewsletterOpen(true)}
-      />
-
-      {/* Sliding Mobile & Navigation Drawer */}
-      <NavigationDrawer
-        isOpen={isMenuOpen}
-        onClose={() => setIsMenuOpen(false)}
-        navItems={navItems}
-        activeNav={activeNav}
-        onSelectNav={handleSelectNav}
-        onOpenNewsletter={() => setIsNewsletterOpen(true)}
-        onOpenApisExplorer={() => setIsApisExplorerOpen(true)}
-        bookmarkCount={bookmarks.length}
       />
 
       {/* Public APIs Explorer Modal */}

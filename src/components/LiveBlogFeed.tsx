@@ -13,6 +13,7 @@ import {
   RefreshCw,
   ArrowUpRight,
   Filter,
+  Radio,
 } from "lucide-react";
 import { BlogPost } from "@/lib/types";
 import BlogPostCard from "@/components/BlogPostCard";
@@ -46,11 +47,13 @@ export default function LiveBlogFeed({
 
   const categories = [
     { id: "all", label: "All Stories" },
-    { id: "tech", label: "Tech & AI" },
-    { id: "design", label: "Design & UI" },
-    { id: "culture", label: "Culture & Ideas" },
-    { id: "architecture", label: "Architecture" },
-    { id: "open", label: "Open Intelligence" },
+    { id: "Current Affairs", label: "Current Affairs" },
+    { id: "Geo Politics", label: "Geo Politics" },
+    { id: "Tech & AI", label: "Tech & AI" },
+    { id: "Crypto & Web3", label: "Crypto & Web3" },
+    { id: "Science & Space", label: "Science & Space" },
+    { id: "Design & UI", label: "Design & UI" },
+    { id: "Finance & Markets", label: "Finance" },
     { id: "bookmarks", label: "Saved" },
   ];
 
@@ -76,15 +79,15 @@ export default function LiveBlogFeed({
         {/* Section Header */}
         <div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-10 sm:mb-14">
           <div>
-            <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/[0.08] border border-white/15 text-white/90 text-xs font-medium mb-3">
-              <Sparkles className="w-3.5 h-3.5 text-[#0066FF]" />
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#D4A853]/15 border border-[#D4A853]/30 text-[#D4A853] text-xs font-semibold uppercase tracking-wider mb-3">
+              <Radio className="w-3.5 h-3.5 animate-pulse" />
               <span>Real-Time Public Streams</span>
             </div>
-            <h2 className="text-[32px] sm:text-[44px] md:text-[50px] font-medium tracking-tight text-white leading-tight">
-              The Living <span className="font-serif-luxury italic font-normal text-[#0066FF]">Chronicle</span>
+            <h2 className="text-[32px] sm:text-[44px] md:text-[52px] font-medium tracking-tight text-white leading-tight">
+              The Living <span className="font-serif-luxury italic font-normal text-[#D4A853]">Chronicle</span>
             </h2>
             <p className="text-white/60 text-xs sm:text-sm mt-2 max-w-lg">
-              Dynamic articles, developer insights, and cultural essays fetched directly from open-source APIs and our editorial archives.
+              Dynamic dispatches, developer monographs, and cultural analyses fetched directly from open-source APIs and our global editorial bureau.
             </p>
           </div>
 
@@ -93,11 +96,11 @@ export default function LiveBlogFeed({
             <button
               onClick={onRefresh}
               disabled={isLoading}
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-xs font-medium transition-all cursor-pointer active:scale-95 disabled:opacity-50"
+              className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/[0.08] hover:bg-[#D4A853] hover:text-black border border-white/15 hover:border-[#D4A853] text-xs font-semibold transition-all duration-300 cursor-pointer active:scale-95 disabled:opacity-50 shadow-lg"
               title="Fetch fresh data from public APIs"
             >
-              <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin text-[#0066FF]" : "text-white"}`} />
-              <span>{isLoading ? "Refreshing..." : "Sync Live API"}</span>
+              <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin text-[#D4A853]" : ""}`} />
+              <span>{isLoading ? "Synchronizing..." : "Sync Live API"}</span>
             </button>
           </div>
         </div>
@@ -114,13 +117,13 @@ export default function LiveBlogFeed({
                   onClick={() => onSelectCategory(cat.id)}
                   className={`px-4 py-2 rounded-full text-xs font-medium whitespace-nowrap transition-all duration-200 cursor-pointer ${
                     isActive
-                      ? "bg-white text-black font-semibold shadow-md"
-                      : "bg-white/5 hover:bg-white/10 text-white/70 hover:text-white border border-white/10"
+                      ? "bg-gradient-to-r from-[#D4A853] to-[#C4943F] text-black font-semibold shadow-md shadow-[#D4A853]/20"
+                      : "bg-white/[0.04] hover:bg-white/[0.08] text-white/70 hover:text-white border border-white/[0.08]"
                   }`}
                 >
                   {cat.label}
                   {cat.id === "bookmarks" && bookmarks.length > 0 && (
-                    <span className="ml-1.5 px-1.5 py-0.5 rounded-full text-[10px] bg-[#0066FF] text-white">
+                    <span className="ml-1.5 px-1.5 py-0.5 rounded-full text-[10px] bg-black text-[#D4A853] font-bold">
                       {bookmarks.length}
                     </span>
                   )}
@@ -139,7 +142,7 @@ export default function LiveBlogFeed({
                 placeholder="Search essays, tags, authors..."
                 value={searchQuery}
                 onChange={(e) => onSearchChange(e.target.value)}
-                className="w-full bg-white/5 border border-white/15 rounded-full pl-10 pr-4 py-2 text-xs text-white placeholder-white/40 focus:outline-none focus:border-white transition-colors"
+                className="w-full bg-white/[0.05] border border-white/[0.12] rounded-full pl-10 pr-4 py-2 text-xs text-white placeholder-white/40 focus:outline-none focus:border-[#D4A853] transition-colors"
               />
               {searchQuery && (
                 <button
@@ -152,8 +155,8 @@ export default function LiveBlogFeed({
             </div>
 
             {/* Sort Dropdown */}
-            <div className="flex items-center gap-1.5 bg-white/5 border border-white/15 rounded-full px-3 py-1.5 text-xs text-white/80">
-              <Filter className="w-3 h-3 text-[#0066FF]" />
+            <div className="flex items-center gap-1.5 bg-white/[0.05] border border-white/[0.12] rounded-full px-3.5 py-2 text-xs text-white/80">
+              <Filter className="w-3.5 h-3.5 text-[#D4A853]" />
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as any)}
@@ -175,7 +178,7 @@ export default function LiveBlogFeed({
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0 }}
-              className="py-20 text-center flex flex-col items-center justify-center border border-dashed border-white/15 rounded-3xl"
+              className="py-20 text-center flex flex-col items-center justify-center border border-dashed border-white/15 rounded-3xl bg-white/[0.02]"
             >
               <Bookmark className="w-8 h-8 text-white/30 mb-3" />
               <h3 className="text-lg font-medium text-white mb-1">No articles found</h3>
@@ -189,7 +192,7 @@ export default function LiveBlogFeed({
                   onSelectCategory("all");
                   onSearchChange("");
                 }}
-                className="mt-5 px-5 py-2 rounded-full bg-white text-black text-xs font-semibold hover:bg-neutral-200 transition-all cursor-pointer"
+                className="mt-5 px-6 py-2.5 rounded-full bg-gradient-to-r from-[#D4A853] to-[#C4943F] text-black text-xs font-semibold hover:brightness-110 transition-all cursor-pointer shadow-lg shadow-[#D4A853]/20"
               >
                 Reset Filters
               </button>

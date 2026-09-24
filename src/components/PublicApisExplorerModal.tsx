@@ -1,16 +1,12 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   X,
   Search,
   ExternalLink,
-  Shield,
-  Lock,
-  Globe,
   Database,
-  Terminal,
   RefreshCw,
 } from "lucide-react";
 import { PublicApiEntry } from "@/lib/types";
@@ -39,13 +35,7 @@ export default function PublicApisExplorerModal({
     "Weather",
   ];
 
-  useEffect(() => {
-    if (isOpen && apis.length === 0) {
-      fetchApis();
-    }
-  }, [isOpen]);
-
-  const fetchApis = async (cat = activeCategory, q = search) => {
+  const fetchApis = useCallback(async (cat = activeCategory, q = search) => {
     setLoading(true);
     try {
       const res = await fetch(
@@ -60,7 +50,13 @@ export default function PublicApisExplorerModal({
     } finally {
       setLoading(false);
     }
-  };
+  }, [activeCategory, search]);
+
+  useEffect(() => {
+    if (isOpen && apis.length === 0) {
+      fetchApis("all", "");
+    }
+  }, [isOpen, apis.length, fetchApis]);
 
   const handleCategoryClick = (cat: string) => {
     setActiveCategory(cat);
@@ -91,19 +87,19 @@ export default function PublicApisExplorerModal({
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.96, y: 15 }}
             transition={{ type: "spring", damping: 28, stiffness: 300 }}
-            className="relative w-full max-w-4xl h-[88vh] bg-[#0C0C0C] border border-white/20 rounded-[28px] p-6 sm:p-8 shadow-2xl flex flex-col z-10 text-white overflow-hidden"
+            className="relative w-full max-w-4xl h-[88vh] bg-[#0A0A0E] border border-white/20 rounded-[28px] p-6 sm:p-8 shadow-2xl flex flex-col z-10 text-white overflow-hidden"
             id="public-apis-modal"
           >
             {/* Header */}
             <div className="flex items-center justify-between pb-6 border-b border-white/10">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-[#0066FF]/20 border border-[#0066FF] flex items-center justify-center text-[#0066FF]">
+                <div className="w-10 h-10 rounded-xl bg-[#D4A853]/20 border border-[#D4A853]/40 flex items-center justify-center text-[#D4A853]">
                   <Database className="w-5 h-5" />
                 </div>
                 <div>
                   <h3 className="text-xl sm:text-2xl font-bold tracking-tight text-white flex items-center gap-2">
                     <span>Public APIs Directory</span>
-                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-white/10 text-white/70 font-mono">
+                    <span className="text-[10px] px-2 py-0.5 rounded-full bg-[#D4A853]/20 text-[#D4A853] border border-[#D4A853]/30 font-mono">
                       github.com/public-apis
                     </span>
                   </h3>
@@ -132,12 +128,12 @@ export default function PublicApisExplorerModal({
                     placeholder="Search APIs by name, category, or description..."
                     value={search}
                     onChange={(e) => setSearch(e.target.value)}
-                    className="w-full bg-white/5 border border-white/15 rounded-full pl-10 pr-4 py-2 text-xs text-white placeholder-white/40 focus:outline-none focus:border-white transition-colors"
+                    className="w-full bg-white/5 border border-white/15 rounded-full pl-10 pr-4 py-2 text-xs text-white placeholder-white/40 focus:outline-none focus:border-[#D4A853] transition-colors"
                   />
                 </div>
                 <button
                   type="submit"
-                  className="px-5 py-2 rounded-full bg-white text-black text-xs font-semibold hover:bg-neutral-200 transition-all cursor-pointer shadow-sm"
+                  className="px-5 py-2 rounded-full bg-gradient-to-r from-[#D4A853] to-[#C4943F] text-black text-xs font-semibold hover:brightness-110 transition-all cursor-pointer shadow-sm"
                 >
                   Search
                 </button>
@@ -151,7 +147,7 @@ export default function PublicApisExplorerModal({
                     onClick={() => handleCategoryClick(cat)}
                     className={`px-3 py-1.5 rounded-full text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
                       activeCategory === cat
-                        ? "bg-[#0066FF] text-white"
+                        ? "bg-gradient-to-r from-[#D4A853] to-[#C4943F] text-black font-semibold"
                         : "bg-white/5 text-white/70 hover:text-white border border-white/10"
                     }`}
                   >
@@ -165,7 +161,7 @@ export default function PublicApisExplorerModal({
             <div className="flex-1 overflow-y-auto pr-1 space-y-3 mt-2">
               {loading ? (
                 <div className="py-20 text-center flex flex-col items-center justify-center text-white/50 text-xs">
-                  <RefreshCw className="w-6 h-6 animate-spin text-[#0066FF] mb-2" />
+                  <RefreshCw className="w-6 h-6 animate-spin text-[#D4A853] mb-2" />
                   <span>Syncing with GitHub Public APIs...</span>
                 </div>
               ) : apis.length === 0 ? (
@@ -180,7 +176,7 @@ export default function PublicApisExplorerModal({
                   >
                     <div className="flex-1">
                       <div className="flex items-center gap-2 mb-1">
-                        <h4 className="text-sm font-semibold text-white group-hover:text-[#0066FF] transition-colors">
+                        <h4 className="text-sm font-semibold text-white group-hover:text-[#D4A853] transition-colors">
                           {item.api}
                         </h4>
                         <span className="text-[10px] px-2 py-0.5 rounded-md bg-white/10 text-white/70">
@@ -208,7 +204,7 @@ export default function PublicApisExplorerModal({
                       href={item.link}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-xs text-white font-medium transition-all whitespace-nowrap cursor-pointer"
+                      className="inline-flex items-center justify-center gap-1.5 px-4 py-2 rounded-full bg-white/10 hover:bg-[#D4A853] hover:text-black border border-white/15 text-xs text-white font-medium transition-all whitespace-nowrap cursor-pointer"
                     >
                       <span>Documentation</span>
                       <ExternalLink className="w-3.5 h-3.5" />
@@ -225,7 +221,7 @@ export default function PublicApisExplorerModal({
                 href="https://github.com/public-apis/public-apis"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="hover:text-white underline inline-flex items-center gap-1"
+                className="hover:text-[#D4A853] underline inline-flex items-center gap-1"
               >
                 <span>View on GitHub</span>
                 <ExternalLink className="w-3 h-3" />

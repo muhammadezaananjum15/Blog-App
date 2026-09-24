@@ -4,7 +4,6 @@ import React, { useState, useEffect } from "react";
 import CosmicCanvas from "@/components/CosmicCanvas";
 import MagneticCursor from "@/components/MagneticCursor";
 import HeaderNav from "@/components/HeaderNav";
-import NavigationDrawer from "@/components/NavigationDrawer";
 import BlogPostCard from "@/components/BlogPostCard";
 import ArticleModal from "@/components/ArticleModal";
 import PublicApisExplorerModal from "@/components/PublicApisExplorerModal";
@@ -16,7 +15,6 @@ import { Sparkles, RefreshCw, Search, Filter, BookOpen } from "lucide-react";
 
 export default function StoriesPage() {
   const [activeNav, setActiveNav] = useState("feeds");
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isNewsletterOpen, setIsNewsletterOpen] = useState(false);
   const [isApisExplorerOpen, setIsApisExplorerOpen] = useState(false);
   const [selectedPost, setSelectedPost] = useState<BlogPost | null>(null);
@@ -38,11 +36,13 @@ export default function StoriesPage() {
 
   const categories = [
     { id: "all", label: "All Stories" },
-    { id: "tech", label: "Tech & AI" },
-    { id: "design", label: "Design & UI" },
-    { id: "culture", label: "Culture & Ideas" },
-    { id: "architecture", label: "Architecture" },
-    { id: "open", label: "Open Intelligence" },
+    { id: "Current Affairs", label: "Current Affairs" },
+    { id: "Geo Politics", label: "Geo Politics" },
+    { id: "Tech & AI", label: "Tech & AI" },
+    { id: "Crypto & Web3", label: "Crypto & Web3" },
+    { id: "Science & Space", label: "Science & Space" },
+    { id: "Design & UI", label: "Design & UI" },
+    { id: "Culture & Ideas", label: "Culture & Ideas" },
     { id: "bookmarks", label: "Saved Articles" },
   ];
 
@@ -107,7 +107,7 @@ export default function StoriesPage() {
   });
 
   return (
-    <div className="w-full min-h-screen bg-transparent text-white relative selection:bg-white selection:text-black">
+    <div className="w-full min-h-screen bg-transparent text-white relative selection:bg-[#D4A853] selection:text-black">
       <CosmicCanvas />
       <MagneticCursor />
 
@@ -120,29 +120,28 @@ export default function StoriesPage() {
           else if (id === "bookmarks") setSelectedCategory("bookmarks");
           else setActiveNav(id);
         }}
-        onOpenMenu={() => setIsMenuOpen(!isMenuOpen)}
-        isMenuOpen={isMenuOpen}
         bookmarkCount={bookmarks.length}
         onOpenApisExplorer={() => setIsApisExplorerOpen(true)}
+        onOpenNewsletter={() => setIsNewsletterOpen(true)}
       />
 
       {/* Page Title Hero */}
-      <div className="pt-12 sm:pt-16 pb-8 px-6 sm:px-12 md:px-16 max-w-7xl mx-auto text-center">
-        <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-white/[0.08] border border-white/15 text-white/90 text-xs font-medium mb-4">
-          <BookOpen className="w-3.5 h-3.5 text-[#0066FF]" />
+      <div className="pt-24 sm:pt-36 pb-10 px-6 sm:px-12 md:px-16 max-w-7xl mx-auto text-center">
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-[#D4A853]/15 border border-[#D4A853]/30 text-[#D4A853] text-xs font-semibold uppercase tracking-wider mb-6">
+          <BookOpen className="w-3.5 h-3.5" />
           <span>The Global Dispatch Archive</span>
         </div>
-        <h1 className="text-4xl sm:text-5xl md:text-6xl font-medium tracking-tight text-white mb-4">
-          All Stories & <span className="font-serif-luxury italic text-[#0066FF]">Open Feeds</span>
+        <h1 className="text-4xl sm:text-6xl md:text-7xl font-medium tracking-tight text-white mb-6 leading-[1.08]">
+          All Stories & <span className="font-serif-luxury italic text-[#D4A853]">Live Feeds.</span>
         </h1>
-        <p className="text-sm sm:text-base text-white/65 max-w-xl mx-auto leading-relaxed">
+        <p className="text-base sm:text-lg text-white/70 max-w-2xl mx-auto leading-relaxed">
           Explore real-time developer essays, architectural monographs, and cultural commentaries harvested continuously from open public networks.
         </p>
       </div>
 
       {/* Controls Bar */}
       <div className="max-w-7xl mx-auto px-6 sm:px-12 md:px-16 mb-10">
-        <div className="p-4 sm:p-5 rounded-3xl bg-white/[0.04] border border-white/15 backdrop-blur-xl flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+        <div className="p-4 sm:p-5 rounded-3xl bg-[#0A0A0E]/90 border border-white/[0.12] backdrop-blur-2xl flex flex-col lg:flex-row lg:items-center justify-between gap-4 shadow-xl">
           {/* Categories */}
           <div className="flex items-center gap-2 overflow-x-auto pb-2 lg:pb-0 scrollbar-none no-scrollbar">
             {categories.map((cat) => (
@@ -151,13 +150,13 @@ export default function StoriesPage() {
                 onClick={() => setSelectedCategory(cat.id)}
                 className={`px-4 py-2 rounded-full text-xs font-medium whitespace-nowrap transition-all cursor-pointer ${
                   selectedCategory === cat.id
-                    ? "bg-white text-black font-semibold shadow-md"
-                    : "bg-white/5 hover:bg-white/10 text-white/70 hover:text-white border border-white/10"
+                    ? "bg-gradient-to-r from-[#D4A853] to-[#C4943F] text-black font-semibold shadow-md shadow-[#D4A853]/20"
+                    : "bg-white/[0.04] hover:bg-white/[0.08] text-white/70 hover:text-white border border-white/[0.08]"
                 }`}
               >
                 {cat.label}
                 {cat.id === "bookmarks" && bookmarks.length > 0 && (
-                  <span className="ml-1.5 px-1.5 py-0.5 rounded-full text-[10px] bg-[#0066FF] text-white">
+                  <span className="ml-1.5 px-1.5 py-0.5 rounded-full text-[10px] bg-black text-[#D4A853] font-bold">
                     {bookmarks.length}
                   </span>
                 )}
@@ -167,8 +166,8 @@ export default function StoriesPage() {
 
           {/* Search, Sort, Sync */}
           <div className="flex flex-wrap items-center gap-3">
-            <div className="relative min-w-[200px] flex-1 sm:flex-initial">
-              <Search className="w-4 h-4 absolute left-3.5 top-1/2 -translate-y-1/2 text-white/40" />
+            <div className="relative min-w-[220px] flex-1 sm:flex-initial">
+              <Search className="w-4 h-4 absolute left-4 top-1/2 -translate-y-1/2 text-white/40" />
               <input
                 type="text"
                 placeholder="Search stories..."
@@ -177,12 +176,12 @@ export default function StoriesPage() {
                   setSearchQuery(e.target.value);
                   fetchFeed(selectedCategory, e.target.value);
                 }}
-                className="w-full bg-white/5 border border-white/15 rounded-full pl-10 pr-4 py-2 text-xs text-white placeholder-white/40 focus:outline-none focus:border-white transition-colors"
+                className="w-full bg-white/[0.05] border border-white/[0.12] rounded-full pl-11 pr-4 py-2 text-xs text-white placeholder-white/40 focus:outline-none focus:border-[#D4A853] transition-colors"
               />
             </div>
 
-            <div className="flex items-center gap-1.5 bg-white/5 border border-white/15 rounded-full px-3 py-1.5 text-xs text-white/80">
-              <Filter className="w-3 h-3 text-[#0066FF]" />
+            <div className="flex items-center gap-1.5 bg-white/[0.05] border border-white/[0.12] rounded-full px-3.5 py-2 text-xs text-white/80">
+              <Filter className="w-3.5 h-3.5 text-[#D4A853]" />
               <select
                 value={sortBy}
                 onChange={(e) => setSortBy(e.target.value as any)}
@@ -198,19 +197,19 @@ export default function StoriesPage() {
             <button
               onClick={() => fetchFeed(selectedCategory, searchQuery)}
               disabled={isLoading}
-              className="p-2.5 rounded-full bg-white/10 hover:bg-white/20 border border-white/15 text-white transition-all cursor-pointer"
+              className="p-2.5 rounded-full bg-white/[0.08] hover:bg-white/[0.15] border border-white/[0.12] text-white transition-all cursor-pointer active:scale-90"
               title="Refresh Feeds"
             >
-              <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin text-[#0066FF]" : ""}`} />
+              <RefreshCw className={`w-3.5 h-3.5 ${isLoading ? "animate-spin text-[#D4A853]" : ""}`} />
             </button>
           </div>
         </div>
       </div>
 
       {/* Articles Grid */}
-      <div className="max-w-7xl mx-auto px-6 sm:px-12 md:px-16 pb-24">
+      <div className="max-w-7xl mx-auto px-6 sm:px-12 md:px-16 pb-28">
         {sortedPosts.length === 0 ? (
-          <div className="py-24 text-center border border-dashed border-white/15 rounded-3xl p-8">
+          <div className="py-24 text-center border border-dashed border-white/15 rounded-3xl p-8 bg-white/[0.02]">
             <h3 className="text-xl font-medium text-white mb-2">No articles found</h3>
             <p className="text-xs text-white/50 max-w-sm mx-auto mb-6">
               {selectedCategory === "bookmarks"
@@ -223,7 +222,7 @@ export default function StoriesPage() {
                 setSearchQuery("");
                 fetchFeed("all", "");
               }}
-              className="px-6 py-2.5 rounded-full bg-white text-black text-xs font-semibold hover:bg-neutral-200 transition-all cursor-pointer"
+              className="px-6 py-2.5 rounded-full bg-gradient-to-r from-[#D4A853] to-[#C4943F] text-black text-xs font-semibold hover:brightness-110 transition-all cursor-pointer shadow-lg shadow-[#D4A853]/20"
             >
               Reset Filters
             </button>
@@ -247,21 +246,6 @@ export default function StoriesPage() {
         onScrollToTop={() => window.scrollTo({ top: 0, behavior: "smooth" })}
         onOpenApisExplorer={() => setIsApisExplorerOpen(true)}
         onOpenNewsletter={() => setIsNewsletterOpen(true)}
-      />
-
-      <NavigationDrawer
-        isOpen={isMenuOpen}
-        onClose={() => setIsMenuOpen(false)}
-        navItems={navItems}
-        activeNav={activeNav}
-        onSelectNav={(id) => {
-          if (id === "home") window.location.href = "/";
-          else if (id === "bookmarks") setSelectedCategory("bookmarks");
-          else setActiveNav(id);
-        }}
-        onOpenNewsletter={() => setIsNewsletterOpen(true)}
-        onOpenApisExplorer={() => setIsApisExplorerOpen(true)}
-        bookmarkCount={bookmarks.length}
       />
 
       <PublicApisExplorerModal
